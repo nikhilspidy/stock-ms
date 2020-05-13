@@ -36,34 +36,6 @@ public class StockController {
 	@Autowired
 	IStockService iStockService;
 	
-	@RequestMapping("/")
-	public String index() {
-		try {
-            FileWriter writer = new FileWriter("MyFile.txt", true);
-            writer.write("Hello World");
-            writer.write("\r\n");   // write new line
-            writer.write("Good Bye!");
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }		
-		
-		String s="";
-		 try {
-	            FileReader reader = new FileReader("MyFile.txt");
-	            int character;
-	 
-	            while ((character = reader.read()) != -1) {
-	                s+=(char) character;
-	            }
-	            reader.close();
-	 
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-		
-		return s;
-	}
 	
 	@RequestMapping("/getStocksList/{id}")
 	public String getStockList(@PathVariable String id) {

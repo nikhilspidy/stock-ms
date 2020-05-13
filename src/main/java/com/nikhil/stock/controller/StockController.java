@@ -13,6 +13,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.nikhil.model.GetStockListMappingResponse;
 import com.nikhil.stock.GenericHttpResponse;
 import com.nikhil.stock.ResponseHandlerImpl;
+import com.nikhil.stock.service.IStockService;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -30,6 +33,9 @@ import com.squareup.okhttp.Response;
 @RestController
 public class StockController {
 
+	@Autowired
+	IStockService iStockService;
+	
 	@RequestMapping("/")
 	public String index() {
 		try {
@@ -148,6 +154,17 @@ return result;
 		genericHttpResponse = closeableHttpClient.execute(httpMethod,responseHandler);
 	System.out.println(genericHttpResponse);
 	return genericHttpResponse.getResponseString();
+	}
+	
+	@RequestMapping("/getStockList/{mobileNumber}")
+	public GetStockListMappingResponse getMyStocksList(@PathVariable("mobileNumber") String mobileNumber){
+		return iStockService.getStockListMapping(mobileNumber);
+	}
+	
+	@RequestMapping("/addStock/{mobileNumber}/{stockId}")
+	public String addToMyStocksList(@PathVariable("mobileNumber") String mobileNumber,@PathVariable("stockId") String stockId){
+		iStockService.addStockListMapping(mobileNumber,stockId);
+		return "";
 	}
 	
 }
